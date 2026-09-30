@@ -1,11 +1,11 @@
 package com.smartpantry.manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerPantry;
     private TextView tvEmpty;
+
     private Button btnAddIngredient;
+    private Button btnSuggestedRecipes;
 
     private DatabaseHelper databaseHelper;
     private PantryAdapter pantryAdapter;
@@ -37,7 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerPantry = findViewById(R.id.recyclerPantry);
         tvEmpty = findViewById(R.id.tvEmpty);
-        btnAddIngredient = findViewById(R.id.btnAddIngredient);
+
+        btnAddIngredient =
+                findViewById(R.id.btnAddIngredient);
+
+        btnSuggestedRecipes =
+                findViewById(R.id.btnSuggestedRecipes);
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -57,11 +64,30 @@ public class MainActivity extends AppCompatActivity {
                                 AddEditIngredientActivity.class
                         );
 
-                        intent.putExtra("item_id", item.getId());
-                        intent.putExtra("item_name", item.getName());
-                        intent.putExtra("item_quantity", item.getQuantity());
-                        intent.putExtra("item_unit", item.getUnit());
-                        intent.putExtra("item_expiry", item.getExpiryDate());
+                        intent.putExtra(
+                                "item_id",
+                                item.getId()
+                        );
+
+                        intent.putExtra(
+                                "item_name",
+                                item.getName()
+                        );
+
+                        intent.putExtra(
+                                "item_quantity",
+                                item.getQuantity()
+                        );
+
+                        intent.putExtra(
+                                "item_unit",
+                                item.getUnit()
+                        );
+
+                        intent.putExtra(
+                                "item_expiry",
+                                item.getExpiryDate()
+                        );
 
                         startActivity(intent);
                     }
@@ -76,9 +102,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerPantry.setAdapter(pantryAdapter);
 
         btnAddIngredient.setOnClickListener(v -> {
+
             Intent intent = new Intent(
                     MainActivity.this,
                     AddEditIngredientActivity.class
+            );
+
+            startActivity(intent);
+        });
+
+        btnSuggestedRecipes.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    MainActivity.this,
+                    SuggestedRecipesActivity.class
             );
 
             startActivity(intent);
@@ -95,7 +132,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadPantryItems() {
 
-        pantryItems = databaseHelper.getAllPantryItems();
+        pantryItems =
+                databaseHelper.getAllPantryItems();
 
         pantryAdapter.updateItems(pantryItems);
 
@@ -119,19 +157,27 @@ public class MainActivity extends AppCompatActivity {
                         "Are you sure you want to delete "
                                 + item.getName() + "?"
                 )
-                .setPositiveButton("Delete", (dialog, which) -> {
+                .setPositiveButton(
+                        "Delete",
+                        (dialog, which) -> {
 
-                    databaseHelper.deletePantryItem(item.getId());
+                            databaseHelper.deletePantryItem(
+                                    item.getId()
+                            );
 
-                    Toast.makeText(
-                            MainActivity.this,
-                            "Ingredient deleted",
-                            Toast.LENGTH_SHORT
-                    ).show();
+                            Toast.makeText(
+                                    MainActivity.this,
+                                    "Ingredient deleted",
+                                    Toast.LENGTH_SHORT
+                            ).show();
 
-                    loadPantryItems();
-                })
-                .setNegativeButton("Cancel", null)
+                            loadPantryItems();
+                        }
+                )
+                .setNegativeButton(
+                        "Cancel",
+                        null
+                )
                 .show();
     }
 }
