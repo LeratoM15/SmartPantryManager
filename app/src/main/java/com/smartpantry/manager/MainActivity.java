@@ -1,5 +1,6 @@
 package com.smartpantry.manager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
         btnSuggestedRecipes =
                 findViewById(R.id.btnSuggestedRecipes);
+
+        BottomNavigationView bottomNavigation =
+                findViewById(R.id.bottomNavigation);
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -119,6 +123,43 @@ public class MainActivity extends AppCompatActivity {
             );
 
             startActivity(intent);
+        });
+
+        bottomNavigation.setSelectedItemId(R.id.navPantry);
+
+        bottomNavigation.setOnItemSelectedListener(item -> {
+
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.navPantry) {
+                return true;
+            }
+
+            if (itemId == R.id.navRecipes) {
+
+                startActivity(
+                        new Intent(
+                                MainActivity.this,
+                                SuggestedRecipesActivity.class
+                        )
+                );
+
+                return true;
+            }
+
+            if (itemId == R.id.navSettings) {
+
+                startActivity(
+                        new Intent(
+                                MainActivity.this,
+                                SettingsActivity.class
+                        )
+                );
+
+                return true;
+            }
+
+            return false;
         });
 
         loadPantryItems();
