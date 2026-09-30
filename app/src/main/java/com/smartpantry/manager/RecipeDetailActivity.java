@@ -25,16 +25,31 @@ public class RecipeDetailActivity extends AppCompatActivity {
         Button btnBack =
                 findViewById(R.id.btnBack);
 
+        String recipeName =
+                getIntent().getStringExtra("recipe_name");
+
+        String ingredients =
+                getIntent().getStringExtra("recipe_ingredients");
+
+        String instructions =
+                getIntent().getStringExtra("recipe_instructions");
+
         tvRecipeName.setText(
-                getIntent().getStringExtra("recipe_name")
+                recipeName != null
+                        ? recipeName
+                        : "Recipe"
         );
 
         tvRecipeIngredients.setText(
-                getIntent().getStringExtra("recipe_ingredients")
+                ingredients != null
+                        ? ingredients
+                        : "No ingredients available."
         );
 
         tvInstructions.setText(
-                getIntent().getStringExtra("recipe_instructions")
+                instructions != null
+                        ? instructions
+                        : "No instructions available."
         );
 
         btnBack.setOnClickListener(v -> finish());
